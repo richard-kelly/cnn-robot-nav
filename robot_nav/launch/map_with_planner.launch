@@ -1,0 +1,28 @@
+<launch>
+  <arg name="map_name"/>
+  <arg name="noisy" default="false"/>
+  <arg name="record_data" default="false"/>
+  <param name="/use_sim_time" value="true"/>
+
+  <include file="$(find robot_nav)/move_base_config/move_base.xml"/>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find robot_nav)/stage_config/maps/$(arg map_name).pgm 0.1" respawn="false" />
+
+  <group if="$(arg noisy)">
+    <node pkg="stage_ros" type="stageros" name="stageros" args="$(find robot_nav)/stage_config/worlds/noisy_$(arg map_name).world" respawn="false" >
+      <param name="base_watchdog_timeout" value="0.2"/>
+    </node>
+  </group>
+  <group unless="$(arg noisy)">
+    <node pkg="stage_ros" type="stageros" name="stageros" args="$(find robot_nav)/stage_config/worlds/$(arg map_name).world" respawn="false" >
+      <param name="base_watchdog_timeout" value="0.2"/>
+    </node>
+  </group>
+
+  <node name="fake_localization" pkg="fake_localization" type="fake_localization" respawn="false" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find robot_nav)/single_robot.rviz" />
+  <node name="goal_generator" pkg="robot_nav" type="goal_generator.py" respawn="false" output="screen"/>
+  <group if="$(arg record_data)">
+    <node name="data_recorder" pkg="robot_nav" type="data_recorder.py" respawn="false" output="screen" args="$(arg map_name)"/>
+  </group>
+
+</launch>

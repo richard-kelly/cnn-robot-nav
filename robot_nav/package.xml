@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package>
+  <name>robot_nav</name>
+  <version>1.0.0</version>
+  <description>
+    This package holds launch files, maps, and Python nodes for driving a simulated robot and generating ML training data with the ROS navigation stack, or driving the robot with a trained CNN model.
+  </description>
+
+  <maintainer email="richardmkelly@gmail.com">Richard Kelly</maintainer>
+
+  <license>MIT</license>
+
+  <author>Richard Kelly</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <run_depend>fake_localization</run_depend>
+  <run_depend>map_server</run_depend>
+  <run_depend>move_base</run_depend>
+  <run_depend>stage_ros</run_depend>
+
+</package>
